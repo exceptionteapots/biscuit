@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PriceTrace</string>
+    <string name="auth">Регистрация</string>
+    <string name="categories">Категории</string>
+    <string name="search">Поиск</string>
+
 </resources>
