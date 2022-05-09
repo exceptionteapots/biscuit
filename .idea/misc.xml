@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Ded/StudioProjects/biscuit/app/src/main/res/layout/category_item.xml" value="0.4338308457711443" />
+        <entry key="..\:/Users/Ded/StudioProjects/biscuit/app/src/main/res/layout/category_list_item.xml" value="0.19746376811594202" />
+        <entry key="..\:/Users/Ded/StudioProjects/biscuit/app/src/main/res/layout/fragment_authorization.xml" value="0.33" />
+        <entry key="..\:/Users/Ded/StudioProjects/biscuit/app/src/main/res/layout/fragment_categories.xml" value="0.22" />
+        <entry key="..\:/Users/Ded/StudioProjects/biscuit/app/src/main/res/layout/fragment_list_product.xml" value="0.12681159420289856" />
+        <entry key="..\:/Users/Ded/StudioProjects/biscuit/app/src/main/res/layout/fragment_product.xml" value="0.1" />
+        <entry key="..\:/Users/Ded/StudioProjects/biscuit/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/dev/PriceTrace/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.367" />
         <entry key="..\:/dev/PriceTrace/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.4475" />
         <entry key="..\:/dev/PriceTrace/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.4475" />

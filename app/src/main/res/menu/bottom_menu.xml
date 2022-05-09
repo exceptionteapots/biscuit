@@ -6,5 +6,5 @@
         android:id="@id/searchFragment"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
-    <item android:title="@string/auth" android:icon="@drawable/ic_auth" android:id="@+id/authorizationFragment"/>
+    <item android:title="@string/profile" android:icon="@drawable/ic_auth" android:id="@+id/profileFragment"/>
 </menu>
