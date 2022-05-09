@@ -15,6 +15,14 @@
         <action
             android:id="@+id/action_categoriesFragment_to_listProductFragment"
             app:destination="@id/listProductFragment" />
+        <action
+            android:id="@+id/action_categoriesFragment_self"
+            app:destination="@id/categoriesFragment" />
+        <argument
+            android:name="Parent"
+            app:argType="integer"
+            android:defaultValue="0" />
+
     </fragment>
     <fragment
         android:id="@+id/authorizationFragment"

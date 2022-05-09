@@ -3,7 +3,10 @@ package ru.exceptionteapots.pricetrace;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ParentCategory {
+/**
+ * POJO-класс для дочерних и родительских категорий
+ * */
+public class Category {
     @SerializedName("id")
     @Expose
     private int id;

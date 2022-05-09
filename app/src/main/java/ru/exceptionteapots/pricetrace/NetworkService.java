@@ -3,6 +3,9 @@ package ru.exceptionteapots.pricetrace;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * singleton-класс, необходимый для связывания с API
+ * */
 public class NetworkService {
     private static NetworkService mInstance;
     private static final String BASE_URL = "https://api.pricetrace.ru";
