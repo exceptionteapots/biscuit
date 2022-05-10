@@ -10,18 +10,9 @@
         android:label="fragment_categories"
         tools:layout="@layout/fragment_categories" >
         <action
-            android:id="@+id/action_categoriesFragment_to_productFragment"
-            app:destination="@id/productFragment" />
-        <action
-            android:id="@+id/action_categoriesFragment_to_listProductFragment"
-            app:destination="@id/listProductFragment" />
-        <action
-            android:id="@+id/action_categoriesFragment_self"
-            app:destination="@id/categoriesFragment" />
-        <argument
-            android:name="Parent"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:id="@+id/action_categoriesFragment_to_subcategoriesFragment"
+            app:destination="@id/subcategoriesFragment" />
+
 
     </fragment>
     <fragment
@@ -33,28 +24,46 @@
         android:id="@+id/searchFragment"
         android:name="ru.exceptionteapots.pricetrace.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_searchFragment_to_listProductFragment"
-            app:destination="@id/listProductFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/productFragment"
         android:name="ru.exceptionteapots.pricetrace.ProductFragment"
         android:label="fragment_product"
-        tools:layout="@layout/fragment_product" />
+        tools:layout="@layout/fragment_product" >
+        <argument
+            android:name="Product_ID"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
     <fragment
         android:id="@+id/listProductFragment"
         android:name="ru.exceptionteapots.pricetrace.ListProductFragment"
         android:label="fragment_list_product"
-        tools:layout="@layout/fragment_list_product" />
+        tools:layout="@layout/fragment_list_product" >
+        <argument
+            android:name="Subcategory_ID"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_listProductFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="ru.exceptionteapots.pricetrace.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/subcategoriesFragment"
+        android:name="ru.exceptionteapots.pricetrace.SubcategoriesFragment"
+        android:label="fragment_subcategories"
+        tools:layout="@layout/fragment_subcategories" >
         <action
-            android:id="@+id/action_profileFragment_to_listProductFragment"
+            android:id="@+id/action_subcategoriesFragment_to_listProductFragment"
             app:destination="@id/listProductFragment" />
+        <argument
+            android:name="Parent_ID"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

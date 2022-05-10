@@ -13,4 +13,7 @@ public interface PriceTraceAPI {
 
     @GET("/categories/{parent_id}/subcategories")
     public Call<List<Category>> getSubcategoryByParentId(@Path("parent_id") int parent_id);
+
+    @GET("/products/by_category/{category_id}")
+    public Call<List<Product>> getProductsByCategory(@Path("category_id") int category_id);
 }

@@ -15,18 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> implements View.OnClickListener {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> implements View.OnClickListener {
 
     private final LayoutInflater inflater;
     private final List<Category> items;
     private final View.OnClickListener mOnClickListener = this;
     private boolean parent = true;
 
-    ListAdapter(Context context, List<Category> items) {
+    CategoryAdapter(Context context, List<Category> items) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
     }
-    ListAdapter(Context context, List<Category> items, boolean parent) {
+    CategoryAdapter(Context context, List<Category> items, boolean parent) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
         this.parent = parent;
@@ -67,13 +67,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
         Bundle arg = new Bundle();
         // клик по родительскому
         if (this.parent) {
-            arg.putInt("Parent", Integer.parseInt(category_id.getText().toString()));
+            arg.putInt("Parent_ID", Integer.parseInt(category_id.getText().toString()));
             NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_categoriesFragment_self, arg);
+            navController.navigate(R.id.action_categoriesFragment_to_subcategoriesFragment, arg);
         }
         // клик по дочерней
         else {
-            Toast.makeText(this.inflater.getContext(), category_id.getText(), Toast.LENGTH_SHORT).show();
+            arg.putInt("Subcategory_ID", Integer.parseInt(category_id.getText().toString()));
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_subcategoriesFragment_to_listProductFragment, arg);
         }
     }
 

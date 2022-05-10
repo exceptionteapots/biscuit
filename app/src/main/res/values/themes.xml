@@ -3,6 +3,7 @@
     <style name="Theme.PriceTrace" parent="Theme.Material3.Light">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_red</item>
+        <item name="colorSecondary">@color/light_red</item>
         <item name="colorSurface">@color/light_red</item>
         <!-- Customize your theme here. -->
     </style>

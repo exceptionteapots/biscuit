@@ -19,11 +19,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class SubcategoriesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private List<Category> data = new ArrayList<>();
     private CategoryAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private int parent_id;
+    private int parentID;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,17 +32,15 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_categories, container, false);
-        mSwipeRefreshLayout = view.findViewById(R.id.categories_refresh);
+        View view = inflater.inflate(R.layout.fragment_subcategories, container, false);
+        mSwipeRefreshLayout = view.findViewById(R.id.subcategories_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.dark_red);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        RecyclerView recyclerView = view.findViewById(R.id.categories_list);
-//        parent_id = CategoriesFragmentArgs.fromBundle(getArguments()).getParent();
+        RecyclerView recyclerView = view.findViewById(R.id.subcategories_list);
+        parentID = SubcategoriesFragmentArgs.fromBundle(getArguments()).getParentID();
 
-//        if (parent_id == 0)
-            adapter = new CategoryAdapter(getContext(), data);
-//        else adapter = new CategoryAdapter(getContext(), data, false);
+        adapter = new CategoryAdapter(getContext(), data, false);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -54,12 +52,12 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
 
 
     /**
-     * Функция отображения родительских категорий при обновлении экрана
+     * Функция отображения дочерних категорий при обновлении экрана
      * **/
     @Override
     public void onRefresh() {
-        // отображение родительских категорий
-        Call<List<Category>> call = NetworkService.getInstance().getPriceTraceAPI().getAllParentCategories();
+        // отображение дочерних категорий
+        Call<List<Category>> call = NetworkService.getInstance().getPriceTraceAPI().getSubcategoryByParentId(parentID);
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
@@ -74,24 +72,5 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
                 t.printStackTrace();
             }
         });
-//        // отображение дочерних категорий
-//        else {
-//            Call<List<Category>> call = NetworkService.getInstance().getPriceTraceAPI().getSubcategoryByParentId(parent_id);
-//            call.enqueue(new Callback<List<Category>>() {
-//                @Override
-//                public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
-//                    List<Category> list = response.body();
-//                    data.addAll(list);
-//                    adapter.notifyDataSetChanged();
-//                    data = new ArrayList<>();
-//                    mSwipeRefreshLayout.setRefreshing(false);
-//                }
-//
-//                @Override
-//                public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {
-//                    t.printStackTrace();
-//                }
-//            });
-//        }
     }
 }
