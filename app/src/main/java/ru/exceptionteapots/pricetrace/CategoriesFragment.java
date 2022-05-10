@@ -23,7 +23,6 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
     private List<Category> data = new ArrayList<>();
     private CategoryAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private int parent_id;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +37,7 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         RecyclerView recyclerView = view.findViewById(R.id.categories_list);
-//        parent_id = CategoriesFragmentArgs.fromBundle(getArguments()).getParent();
-
-//        if (parent_id == 0)
             adapter = new CategoryAdapter(getContext(), data);
-//        else adapter = new CategoryAdapter(getContext(), data, false);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -74,24 +69,5 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
                 t.printStackTrace();
             }
         });
-//        // отображение дочерних категорий
-//        else {
-//            Call<List<Category>> call = NetworkService.getInstance().getPriceTraceAPI().getSubcategoryByParentId(parent_id);
-//            call.enqueue(new Callback<List<Category>>() {
-//                @Override
-//                public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
-//                    List<Category> list = response.body();
-//                    data.addAll(list);
-//                    adapter.notifyDataSetChanged();
-//                    data = new ArrayList<>();
-//                    mSwipeRefreshLayout.setRefreshing(false);
-//                }
-//
-//                @Override
-//                public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {
-//                    t.printStackTrace();
-//                }
-//            });
-//        }
     }
 }
