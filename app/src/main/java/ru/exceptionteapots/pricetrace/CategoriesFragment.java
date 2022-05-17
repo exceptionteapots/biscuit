@@ -37,13 +37,33 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         RecyclerView recyclerView = view.findViewById(R.id.categories_list);
-            adapter = new CategoryAdapter(getContext(), data);
+        adapter = new CategoryAdapter(getContext(), data, recyclerView);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter( adapter );
         mSwipeRefreshLayout.setRefreshing(true);
-        onRefresh();
+
+        // отображение родительских категорий
+        Call<List<Category>> call = NetworkService.getInstance().getPriceTraceAPI().getAllParentCategories();
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
+                List<Category> list = response.body();
+                if (list == null) {
+
+                }
+                data.addAll(list);
+                adapter.notifyDataSetChanged();
+                data = new ArrayList<>();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+            @Override
+            public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
         return view;
     }
 

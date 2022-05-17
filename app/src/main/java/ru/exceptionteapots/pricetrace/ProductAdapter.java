@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
@@ -21,10 +23,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private final LayoutInflater inflater;
     private final List<Product> items;
+    private final RecyclerView recyclerView;
 
-    ProductAdapter(Context context, List<Product> items) {
+    ProductAdapter(Context context, List<Product> items, RecyclerView recyclerView) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -32,20 +36,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.product_item, parent, false);
         // подробный просмотр товара при нажатии на всю карточку
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(inflater.getContext(), "product clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+        view.setOnClickListener(onProductClick);
         // добавление в корзину при нажатии
         Button toCart = view.findViewById(R.id.product_button);
-        toCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(inflater.getContext(), "to cart", Toast.LENGTH_SHORT).show();
-            }
-        });
+        toCart.setOnClickListener(onCartClick);
         return new ViewHolder(view);
     }
 
@@ -55,33 +49,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product item = items.get(position);
-        Thread thread = new Thread(){
+        new Thread() {
             @Override
             public void run() {
-
                 holder.productName.setText(item.getName());
-                holder.productId.setText(String.valueOf(item.getId()));
-
                 // срез описания товара до 100 символов + проверка по длине
                 String description = item.getDescription();
-                holder.productDescription.setText(description.length() > 100 ? description.substring(0, 100) : description + "...");
-
+                if (description.length() > 0)
+                    holder.productDescription.setText(description.length() > 100 ? description.substring(0, 100) : description + "...");
                 String price = "от " + item.getMin_price() + "₽ до " + item.getMax_price() + "₽";
                 holder.productPrice.setText(price);
-
-                try {
-                    InputStream is = (InputStream) new URL("https://pricetrace.ru/static/img/" + item.getImg()).getContent();
-                    Drawable img = Drawable.createFromStream(is, null);
-                    holder.productImage.setImageDrawable(img);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-        };
-        thread.start();
+        }.start();
+
         try {
-            thread.join();
-        } catch (InterruptedException e) {
+            Picasso.get().load("https://pricetrace.ru/static/img/" + item.getImg()).into(holder.productImage);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -91,14 +74,32 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return items.size();
     }
 
+    private final View.OnClickListener onCartClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int itemPosition = recyclerView.getChildLayoutPosition(view);
+            int product_id = items.get(itemPosition).getId();
+            Toast.makeText(inflater.getContext(), "to cart" + product_id, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private final View.OnClickListener onProductClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int itemPosition = recyclerView.getChildLayoutPosition(view);
+            int product_id = items.get(itemPosition).getId();
+            Toast.makeText(inflater.getContext(), "product clicked" + product_id, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView productImage;
-        final TextView productName, productId, productDescription, productPrice;
+        final TextView productName, productDescription, productPrice;
         ViewHolder(View view){
             super(view);
             productImage = view.findViewById(R.id.product_img);
             productName = view.findViewById(R.id.product_name);
-            productId = view.findViewById(R.id.product_id);
             productDescription = view.findViewById(R.id.product_description);
             productPrice = view.findViewById(R.id.product_price);
         }

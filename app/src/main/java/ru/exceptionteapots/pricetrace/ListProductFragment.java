@@ -45,15 +45,32 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
 
         RecyclerView recyclerView = view.findViewById(R.id.list_product_list);
 
-        categoryID = ListProductFragmentArgs.fromBundle(getArguments()).getSubcategoryID();
+        categoryID = ListProductFragmentArgs.fromBundle(getArguments()).getCategoryID();
 
-        adapter = new ProductAdapter(getContext(), data);
+        adapter = new ProductAdapter(getContext(), data, recyclerView);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter( adapter );
         mSwipeRefreshLayout.setRefreshing(true);
-        onRefresh();
+
+        Call<List<Product>> call = NetworkService.getInstance().getPriceTraceAPI().getProductsByCategory(categoryID);
+        call.enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+                List<Product> list = response.body();
+                data.addAll(list);
+
+                data = new ArrayList<>();
+                mSwipeRefreshLayout.setRefreshing(false);
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
         return view;
     }
 

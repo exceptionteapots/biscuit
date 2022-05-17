@@ -19,23 +19,26 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     private final LayoutInflater inflater;
     private final List<Category> items;
-    private final View.OnClickListener mOnClickListener = this;
-    private boolean parent = true;
+    private final RecyclerView recyclerView;
+    private final boolean isParent;
 
-    CategoryAdapter(Context context, List<Category> items) {
+    CategoryAdapter(Context context, List<Category> items, RecyclerView recyclerView, boolean isParent) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
+        this.recyclerView = recyclerView;
+        this.isParent = isParent;
     }
-    CategoryAdapter(Context context, List<Category> items, boolean parent) {
+    CategoryAdapter(Context context, List<Category> items, RecyclerView recyclerView) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
-        this.parent = parent;
+        this.recyclerView = recyclerView;
+        this.isParent = true;
     }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.category_item, parent, false);
-        view.setOnClickListener(mOnClickListener);
+        view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
@@ -46,7 +49,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category item = items.get(position);
         holder.nameView.setText(item.getName());
-        holder.idView.setText(String.valueOf(item.getId()));
     }
 
     @Override
@@ -63,28 +65,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
      * */
     @Override
     public void onClick(View view) {
-        TextView category_id = view.findViewById(R.id.category_id);
+        int itemPosition = recyclerView.getChildLayoutPosition(view);
+        int category_id = items.get(itemPosition).getId();
         Bundle arg = new Bundle();
-        // клик по родительскому
-        if (this.parent) {
-            arg.putInt("Parent_ID", Integer.parseInt(category_id.getText().toString()));
-            NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_categoriesFragment_to_subcategoriesFragment, arg);
-        }
-        // клик по дочерней
-        else {
-            arg.putInt("Subcategory_ID", Integer.parseInt(category_id.getText().toString()));
-            NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_subcategoriesFragment_to_listProductFragment, arg);
-        }
+        arg.putInt("Category_ID", category_id);
+        NavController navController = Navigation.findNavController(view);
+        if (isParent) navController.navigate(R.id.action_categoriesFragment_to_subcategoriesFragment, arg);
+        else navController.navigate(R.id.action_subcategoriesFragment_to_listProductFragment, arg);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView nameView, idView;
+        final TextView nameView;
         ViewHolder(View view){
             super(view);
             nameView = view.findViewById(R.id.category_name);
-            idView = view.findViewById(R.id.category_id);
         }
     }
 }

@@ -28,12 +28,6 @@
                 android:layout_alignParentTop="true"
                 android:textSize="15sp" />
 
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/category_id"
-                 android:layout_height="0dp"
-                android:layout_width="0dp"/>
-
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
