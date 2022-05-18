@@ -1,12 +1,12 @@
 package ru.exceptionteapots.pricetrace;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
@@ -39,7 +37,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         view.setOnClickListener(onProductClick);
         // добавление в корзину при нажатии
         Button toCart = view.findViewById(R.id.product_button);
-        toCart.setOnClickListener(onCartClick);
+        toCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int itemPosition = recyclerView.getChildLayoutPosition((View) view.getParent());
+                int product_id = items.get(itemPosition).getId();
+                Toast.makeText(inflater.getContext(), "to cart" + product_id, Toast.LENGTH_SHORT).show();
+            }
+        });
         return new ViewHolder(view);
     }
 
@@ -49,18 +54,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product item = items.get(position);
-        new Thread() {
-            @Override
-            public void run() {
+
                 holder.productName.setText(item.getName());
                 // срез описания товара до 100 символов + проверка по длине
                 String description = item.getDescription();
-                if (description.length() > 0)
+                if (description != null)
                     holder.productDescription.setText(description.length() > 100 ? description.substring(0, 100) : description + "...");
+                if (item.getMin_price() != 0) {
                 String price = "от " + item.getMin_price() + "₽ до " + item.getMax_price() + "₽";
-                holder.productPrice.setText(price);
-            }
-        }.start();
+                holder.productPrice.setText(price);}
+
 
         try {
             Picasso.get().load("https://pricetrace.ru/static/img/" + item.getImg()).into(holder.productImage);
@@ -73,15 +76,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public int getItemCount() {
         return items.size();
     }
-
-    private final View.OnClickListener onCartClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            int itemPosition = recyclerView.getChildLayoutPosition(view);
-            int product_id = items.get(itemPosition).getId();
-            Toast.makeText(inflater.getContext(), "to cart" + product_id, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     private final View.OnClickListener onProductClick = new View.OnClickListener() {
         @Override
