@@ -58,9 +58,9 @@ public class SubcategoriesFragment extends Fragment implements SwipeRefreshLayou
             @Override
             public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
                 List<Category> list = response.body();
+                data.clear();
                 data.addAll(list);
                 adapter.notifyDataSetChanged();
-                data = new ArrayList<>();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
             @Override

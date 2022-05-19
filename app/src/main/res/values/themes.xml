@@ -1,10 +1,11 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
     <style name="Theme.PriceTrace" parent="Theme.Material3.Light">
-        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_red</item>
         <item name="colorSecondary">@color/light_red</item>
         <item name="colorSurface">@color/light_red</item>
-        <!-- Customize your theme here. -->
+    </style>
+    <!--Splash-screen style-->
+    <style name="Theme.PriceTrace.Launcher">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 </resources>

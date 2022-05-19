@@ -58,7 +58,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 holder.productName.setText(item.getName());
                 // срез описания товара до 100 символов + проверка по длине
                 String description = item.getDescription();
-                if (description != null)
+                if (description != null && description.length() > 0)
                     holder.productDescription.setText(description.length() > 100 ? description.substring(0, 100) : description + "...");
                 if (item.getMin_price() != 0) {
                 String price = "от " + item.getMin_price() + "₽ до " + item.getMax_price() + "₽";

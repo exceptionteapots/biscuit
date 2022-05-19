@@ -1,5 +1,6 @@
 package ru.exceptionteapots.pricetrace;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,11 +64,24 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 List<Product> list = response.body();
-                data.addAll(list);
+                if (list != null) {
+                    data.addAll(list);
 
-                data = new ArrayList<>();
-                mSwipeRefreshLayout.setRefreshing(false);
-                adapter.notifyDataSetChanged();
+                    data = new ArrayList<>();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle(getString(R.string.network_error_title))
+                            .setMessage(getString(R.string.network_error_message))
+                            .setIcon(R.drawable.ic_cancel)
+                            .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+
+                            })
+                            .show();
+//                    getParentFragmentManager().popBackStack();
+                }
             }
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
@@ -87,11 +102,24 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 List<Product> list = response.body();
-                data.addAll(list);
+                if (list != null) {
+                    data.addAll(list);
 
-                data = new ArrayList<>();
-                mSwipeRefreshLayout.setRefreshing(false);
-                adapter.notifyDataSetChanged();
+                    data = new ArrayList<>();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle(getString(R.string.network_error_title))
+                            .setMessage(getString(R.string.network_error_message))
+                            .setIcon(R.drawable.ic_cancel)
+                            .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+
+                            })
+                            .show();
+//                    getParentFragmentManager().popBackStack();
+                }
             }
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {

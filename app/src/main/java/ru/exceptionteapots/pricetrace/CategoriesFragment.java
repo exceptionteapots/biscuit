@@ -87,9 +87,9 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
                 if (list == null) {
 
                 }
+                data.clear();
                 data.addAll(list);
                 adapter.notifyDataSetChanged();
-                data = new ArrayList<>();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
             @Override
