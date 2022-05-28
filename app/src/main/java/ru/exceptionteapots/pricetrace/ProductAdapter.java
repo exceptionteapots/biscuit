@@ -6,13 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -34,17 +36,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.product_item, parent, false);
         // подробный просмотр товара при нажатии на всю карточку
-        view.setOnClickListener(onProductClick);
-        // добавление в корзину при нажатии
-        Button toCart = view.findViewById(R.id.product_button);
-        toCart.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int itemPosition = recyclerView.getChildLayoutPosition((View) view.getParent());
-                int product_id = items.get(itemPosition).getId();
-                Toast.makeText(inflater.getContext(), "to cart" + product_id, Toast.LENGTH_SHORT).show();
+                int itemPosition = recyclerView.getChildLayoutPosition(view);
+                String productName = items.get(itemPosition).getName();
+                String productDescription = items.get(itemPosition).getDescription();
+                String productImage = items.get(itemPosition).getImg();
+
             }
         });
+
+        // добавление в корзину при нажатии
+//        Button toCart = view.findViewById(R.id.product_button);
+//        toCart.setOnClickListener(view1 -> {
+//            int itemPosition = recyclerView.getChildLayoutPosition((View) view1.getParent());
+//            int product_id = items.get(itemPosition).getId();
+//            Toast.makeText(inflater.getContext(), "to cart" + product_id, Toast.LENGTH_SHORT).show();
+//        });
         return new ViewHolder(view);
     }
 
@@ -76,15 +85,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public int getItemCount() {
         return items.size();
     }
-
-    private final View.OnClickListener onProductClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            int itemPosition = recyclerView.getChildLayoutPosition(view);
-            int product_id = items.get(itemPosition).getId();
-            Toast.makeText(inflater.getContext(), "product clicked" + product_id, Toast.LENGTH_SHORT).show();
-        }
-    };
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

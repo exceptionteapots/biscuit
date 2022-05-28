@@ -1,7 +1,7 @@
 <resources>
     <style name="Theme.PriceTrace" parent="Theme.Material3.Light">
         <item name="colorPrimary">@color/dark_red</item>
-        <item name="colorSecondary">@color/light_red</item>
+        <item name="colorSecondary">@color/dark_red</item>
         <item name="colorSurface">@color/light_red</item>
     </style>
     <!--Splash-screen style-->

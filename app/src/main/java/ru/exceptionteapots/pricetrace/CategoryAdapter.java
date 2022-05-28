@@ -70,8 +70,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Bundle arg = new Bundle();
         arg.putInt("Category_ID", category_id);
         NavController navController = Navigation.findNavController(view);
-        if (isParent) navController.navigate(R.id.action_categoriesFragment_to_subcategoriesFragment, arg);
-        else navController.navigate(R.id.action_subcategoriesFragment_to_listProductFragment, arg);
+        if (isParent) navController.navigate(R.id.subcategoriesFragment, arg);
+        else navController.navigate(R.id.listProductFragment, arg);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

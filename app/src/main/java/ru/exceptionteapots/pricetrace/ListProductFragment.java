@@ -1,27 +1,26 @@
 package ru.exceptionteapots.pricetrace;
 
-import android.content.DialogInterface;
+import static ru.exceptionteapots.pricetrace.NetworkService.hasConnection;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,35 +58,8 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
         recyclerView.setAdapter( adapter );
         mSwipeRefreshLayout.setRefreshing(true);
 
-        Call<List<Product>> call = NetworkService.getInstance().getPriceTraceAPI().getProductsByCategory(categoryID);
-        call.enqueue(new Callback<List<Product>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
-                List<Product> list = response.body();
-                if (list != null) {
-                    data.addAll(list);
+        onRefresh();
 
-                    data = new ArrayList<>();
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    adapter.notifyDataSetChanged();
-                }
-                else {
-                    new MaterialAlertDialogBuilder(getContext())
-                            .setTitle(getString(R.string.network_error_title))
-                            .setMessage(getString(R.string.network_error_message))
-                            .setIcon(R.drawable.ic_cancel)
-                            .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
-
-                            })
-                            .show();
-//                    getParentFragmentManager().popBackStack();
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-                t.printStackTrace();
-            }
-        });
 
         return view;
     }
@@ -97,6 +69,17 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
      * */
     @Override
     public void onRefresh() {
+        if (!hasConnection(getContext())) {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle(getString(R.string.network_error_title))
+                    .setMessage(getString(R.string.network_error_message))
+                    .setIcon(R.drawable.ic_cancel)
+                    .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+
+                    })
+                    .show();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         Call<List<Product>> call = NetworkService.getInstance().getPriceTraceAPI().getProductsByCategory(categoryID);
         call.enqueue(new Callback<List<Product>>() {
             @Override
@@ -111,14 +94,14 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
                 }
                 else {
                     new MaterialAlertDialogBuilder(getContext())
-                            .setTitle(getString(R.string.network_error_title))
-                            .setMessage(getString(R.string.network_error_message))
+                            .setTitle(getString(R.string.server_error_title))
+                            .setMessage(getString(R.string.server_error_message))
                             .setIcon(R.drawable.ic_cancel)
                             .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
 
                             })
                             .show();
-//                    getParentFragmentManager().popBackStack();
+                    getParentFragmentManager().popBackStack();
                 }
             }
             @Override

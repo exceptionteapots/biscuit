@@ -1,5 +1,7 @@
 package ru.exceptionteapots.pricetrace;
 
+import static ru.exceptionteapots.pricetrace.NetworkService.hasConnection;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -8,14 +10,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,25 +48,7 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
         recyclerView.setAdapter( adapter );
         mSwipeRefreshLayout.setRefreshing(true);
 
-        // отображение родительских категорий
-        Call<List<Category>> call = NetworkService.getInstance().getPriceTraceAPI().getAllParentCategories();
-        call.enqueue(new Callback<List<Category>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
-                List<Category> list = response.body();
-                if (list == null) {
-
-                }
-                data.addAll(list);
-                adapter.notifyDataSetChanged();
-                data = new ArrayList<>();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-            @Override
-            public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        onRefresh();
 
         return view;
     }
@@ -79,18 +60,28 @@ public class CategoriesFragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public void onRefresh() {
         // отображение родительских категорий
+        if (!hasConnection(getContext())) {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle(getString(R.string.network_error_title))
+                    .setMessage(getString(R.string.network_error_message))
+                    .setIcon(R.drawable.ic_cancel)
+                    .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+
+                    })
+                    .show();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         Call<List<Category>> call = NetworkService.getInstance().getPriceTraceAPI().getAllParentCategories();
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
                 List<Category> list = response.body();
-                if (list == null) {
-
-                }
-                data.clear();
-                data.addAll(list);
-                adapter.notifyDataSetChanged();
                 mSwipeRefreshLayout.setRefreshing(false);
+                if (list != null) {
+                    data.clear();
+                    data.addAll(list);
+                    adapter.notifyDataSetChanged();
+                }
             }
             @Override
             public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {

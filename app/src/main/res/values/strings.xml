@@ -10,8 +10,10 @@
     <string name="add_to_cart">В корзину</string>
     <string name="search_error">Товары не найдены</string>
     <string name="search_success">Результаты поиска:</string>
-    <string name="network_error_title">Ошибка сервера</string>
-    <string name="network_error_message">Судя по всему, произошла какая-то ошибка на стороне сервиса. Повторите операцию позже</string>
+    <string name="server_error_title">Ошибка сервера</string>
+    <string name="server_error_message">Судя по всему, произошла какая-то ошибка на стороне сервиса. Повторите операцию позднее</string>
+    <string name="network_error_title">Ошибка подключения</string>
+    <string name="network_error_message">Подключитесь к сети и повторите операцию</string>
     <string name="ok">ОК</string>
 
 </resources>

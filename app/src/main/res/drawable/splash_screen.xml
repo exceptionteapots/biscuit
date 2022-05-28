@@ -5,16 +5,11 @@
 
     <item android:drawable="@color/light_red"/>
 
-    <item
-        android:bottom="7dp"
-        android:left="7dp"
-        android:right="7dp"
-        android:top="7dp">
+    <item>
 
         <bitmap
-
             android:src="@drawable/logo"
-            android:gravity="center"/>
+            android:gravity="clip_vertical"/>
 
     </item>
 

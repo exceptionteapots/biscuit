@@ -3,19 +3,16 @@ package ru.exceptionteapots.pricetrace;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -65,7 +62,6 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     if (searchField.getText().toString().isEmpty()) {
-                        Toast.makeText(getActivity(), "gg", Toast.LENGTH_SHORT).show();
                         data.clear();
                         adapter.notifyDataSetChanged();
                         warning.setText(getString(R.string.search_success));
