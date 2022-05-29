@@ -24,4 +24,6 @@
             android:layout_height="match_parent" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/product_sheet"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

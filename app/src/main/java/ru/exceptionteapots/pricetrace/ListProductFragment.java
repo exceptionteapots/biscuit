@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,8 +51,8 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
         RecyclerView recyclerView = view.findViewById(R.id.list_product_list);
 
         categoryID = ListProductFragmentArgs.fromBundle(getArguments()).getCategoryID();
-
-        adapter = new ProductAdapter(getContext(), data, recyclerView);
+        FrameLayout frameLayout = view.findViewById(R.id.bottom_sheet);
+        adapter = new ProductAdapter(getContext(), data, recyclerView, frameLayout);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);

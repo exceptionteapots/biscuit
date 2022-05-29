@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +42,8 @@ public class SearchFragment extends Fragment {
             @Override
             public void run() {
             RecyclerView recyclerView = view.findViewById(R.id.search_list);
-            adapter = new ProductAdapter(getContext(), data, recyclerView);
+            FrameLayout frameLayout = view.findViewById(R.id.bottom_sheet);
+            adapter = new ProductAdapter(getContext(), data, recyclerView, frameLayout);
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(llm);

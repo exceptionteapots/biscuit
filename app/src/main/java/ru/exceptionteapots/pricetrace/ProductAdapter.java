@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +25,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private final LayoutInflater inflater;
     private final List<Product> items;
     private final RecyclerView recyclerView;
+    private BottomSheetBehavior sheetBehavior;
+    private TextView sheetName;
+    private TextView sheetDescription;
+    private ImageView sheetImage;
 
-    ProductAdapter(Context context, List<Product> items, RecyclerView recyclerView) {
+    ProductAdapter(Context context, List<Product> items, RecyclerView recyclerView, FrameLayout frameLayout) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
+        this.sheetBehavior = BottomSheetBehavior.from(frameLayout);
+        sheetName = frameLayout.findViewById(R.id.sheet_title);
+        sheetDescription = frameLayout.findViewById(R.id.sheet_description);
+        sheetImage = frameLayout.findViewById(R.id.sheet_img);
     }
 
     @NonNull
@@ -39,11 +48,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) return;
                 int itemPosition = recyclerView.getChildLayoutPosition(view);
                 String productName = items.get(itemPosition).getName();
                 String productDescription = items.get(itemPosition).getDescription();
                 String productImage = items.get(itemPosition).getImg();
 
+                sheetName.setText(productName);
+                sheetDescription.setText(productDescription);
+                try {
+                    Picasso.get().load("https://pricetrace.ru/static/img/" + productImage).into(sheetImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
 

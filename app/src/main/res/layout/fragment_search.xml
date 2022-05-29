@@ -61,6 +61,6 @@
             app:layout_constraintStart_toStartOf="parent" />
     </ScrollView>
 
-
+    <include layout="@layout/product_sheet"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
