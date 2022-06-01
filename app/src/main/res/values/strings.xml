@@ -15,5 +15,12 @@
     <string name="network_error_title">Ошибка подключения</string>
     <string name="network_error_message">Подключитесь к сети и повторите операцию</string>
     <string name="ok">ОК</string>
+    <string name="characteristics">Характеристики</string>
+    <string name="description">Описание</string>
+    <string name="title">Название</string>
+    <string name="quit">Выйти</string>
+    <string name="hello">Добро пожаловать!"</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
 
 </resources>

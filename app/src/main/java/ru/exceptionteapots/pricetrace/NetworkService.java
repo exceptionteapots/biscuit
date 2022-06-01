@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkService {
     private static NetworkService mInstance;
     private static final String BASE_URL = "https://api.pricetrace.ru";
-    private Retrofit mRetrofit;
+    private final Retrofit mRetrofit;
 
     private NetworkService() {
         mRetrofit = new Retrofit.Builder()

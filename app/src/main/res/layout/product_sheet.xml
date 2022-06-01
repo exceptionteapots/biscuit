@@ -20,12 +20,13 @@
             android:layout_width="100dp"
             android:scaleType="centerCrop"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_bottom_sheet"
+            android:src="@drawable/ic__931142_minimize_minus_remove_line_icon"
             app:tint="@color/dark_red"
             android:layout_gravity="center|top"/>
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested"
             android:overScrollMode="never"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
             android:layout_width="match_parent"
@@ -36,35 +37,83 @@
             android:layout_height="wrap_content">
 
 
+            <ImageView
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/sheet_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        <ImageView
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:id="@+id/sheet_img"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:id="@+id/sheet_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sheet_img"
-            app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/sheet_title_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sheet_img"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:textColor="@color/dark_red"
+                android:text="@string/title"/>
 
-        <TextView
-            android:id="@+id/sheet_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sheet_title"
-            app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/sheet_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sheet_title_title"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:id="@+id/sheet_description_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sheet_title"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:textColor="@color/dark_red"
+                android:text="@string/description"/>
+
+            <TextView
+                android:id="@+id/sheet_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sheet_description_title"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:id="@+id/sheet_characteristics_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sheet_description"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:textColor="@color/dark_red"
+                android:text="@string/characteristics"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:overScrollMode="never"
+                android:id="@+id/sheet_characteristics"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sheet_characteristics_title"
+                app:layout_constraintStart_toStartOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
     </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

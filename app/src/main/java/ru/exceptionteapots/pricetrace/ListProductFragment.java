@@ -43,6 +43,7 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity) requireActivity()).setChosenFragment(R.id.listProductFragment);
         View view = inflater.inflate(R.layout.fragment_list_product, container, false);
         mSwipeRefreshLayout = view.findViewById(R.id.list_product_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.dark_red);

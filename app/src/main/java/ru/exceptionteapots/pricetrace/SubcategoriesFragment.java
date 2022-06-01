@@ -37,6 +37,8 @@ public class SubcategoriesFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_subcategories, container, false);
+
+        ((MainActivity) requireActivity()).setChosenFragment(R.id.subcategoriesFragment);
         mSwipeRefreshLayout = view.findViewById(R.id.subcategories_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.dark_red);
         mSwipeRefreshLayout.setOnRefreshListener(this);

@@ -52,7 +52,7 @@
         android:id="@+id/profileFragment"
         android:name="ru.exceptionteapots.pricetrace.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_authorized" />
     <fragment
         android:id="@+id/subcategoriesFragment"
         android:name="ru.exceptionteapots.pricetrace.SubcategoriesFragment"

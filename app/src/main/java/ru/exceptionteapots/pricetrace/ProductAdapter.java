@@ -1,9 +1,12 @@
 package ru.exceptionteapots.pricetrace;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,32 +15,64 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private final LayoutInflater inflater;
     private final List<Product> items;
     private final RecyclerView recyclerView;
-    private BottomSheetBehavior sheetBehavior;
-    private TextView sheetName;
-    private TextView sheetDescription;
-    private ImageView sheetImage;
+    private final BottomSheetBehavior sheetBehavior;
+    private final TextView sheetName;
+    private final TextView sheetDescription;
+    private final TextView sheetDescriptionTitle;
+    private final TextView sheetCharacteristicsTitle;
+    private final ImageView sheetImage;
+    private final ArrayList<Characteristic> characteristics;
+    private final CharacteristicAdapter characteristicAdapter;
+    private final NestedScrollView nestedScrollView;
+    private final RecyclerView sheetCharacteristics;
 
     ProductAdapter(Context context, List<Product> items, RecyclerView recyclerView, FrameLayout frameLayout) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
         this.sheetBehavior = BottomSheetBehavior.from(frameLayout);
-        sheetName = frameLayout.findViewById(R.id.sheet_title);
-        sheetDescription = frameLayout.findViewById(R.id.sheet_description);
-        sheetImage = frameLayout.findViewById(R.id.sheet_img);
+        this.sheetName = frameLayout.findViewById(R.id.sheet_title);
+        this.sheetDescription = frameLayout.findViewById(R.id.sheet_description);
+        this.sheetImage = frameLayout.findViewById(R.id.sheet_img);
+        this.sheetDescriptionTitle = frameLayout.findViewById(R.id.sheet_description_title);
+        this.sheetCharacteristicsTitle = frameLayout.findViewById(R.id.sheet_characteristics_title);
+        this.nestedScrollView = frameLayout.findViewById(R.id.nested);
+
+        this.sheetCharacteristics = frameLayout.findViewById(R.id.sheet_characteristics);
+        this.characteristics = new ArrayList<>();
+        this.characteristicAdapter = new CharacteristicAdapter(context, characteristics);
+
+        LinearLayoutManager llm = new LinearLayoutManager(context);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        this.sheetCharacteristics.setLayoutManager(llm);
+        this.sheetCharacteristics.setAdapter(characteristicAdapter);
+
+        MaterialDividerItemDecoration devider = new MaterialDividerItemDecoration(context, LinearLayoutManager.VERTICAL);
+        devider.setDividerColor(context.getColor(R.color.dark_red));
+        this.sheetCharacteristics.addItemDecoration(devider);
     }
 
     @NonNull
@@ -49,9 +84,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) return;
+                sheetCharacteristicsTitle.setVisibility(View.GONE);
+                sheetCharacteristics.setVisibility(View.GONE);
+                nestedScrollView.scrollTo(0,0);
+                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 int itemPosition = recyclerView.getChildLayoutPosition(view);
+                int productID = items.get(itemPosition).getId();
                 String productName = items.get(itemPosition).getName();
                 String productDescription = items.get(itemPosition).getDescription();
+                if (productDescription != null) {
+                    if (productDescription.isEmpty()) sheetDescriptionTitle.setVisibility(View.GONE);
+                    else sheetDescriptionTitle.setVisibility(View.VISIBLE);
+                }
+                else sheetDescriptionTitle.setVisibility(View.GONE);
                 String productImage = items.get(itemPosition).getImg();
 
                 sheetName.setText(productName);
@@ -61,7 +106,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                Call<List<Characteristic>> call = NetworkService.getInstance().getPriceTraceAPI().getCharacteristicsByProductId(productID);
+                call.enqueue(new Callback<List<Characteristic>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<Characteristic>> call, @NonNull Response<List<Characteristic>> response) {
+                        List<Characteristic> list = response.body();
+
+                        if (list.get(0).getId() != 0) {
+                            characteristics.addAll(list);
+                            characteristicAdapter.notifyDataSetChanged();
+                            sheetCharacteristicsTitle.setVisibility(View.VISIBLE);
+                            sheetCharacteristics.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<List<Characteristic>> call, @NonNull Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+
             }
         });
 
