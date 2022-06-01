@@ -19,7 +19,11 @@
         android:id="@+id/authorizationFragment"
         android:name="ru.exceptionteapots.pricetrace.AuthorizationFragment"
         android:label="fragment_authorization"
-        tools:layout="@layout/fragment_authorization" />
+        tools:layout="@layout/fragment_authorization" >
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="ru.exceptionteapots.pricetrace.SearchFragment"

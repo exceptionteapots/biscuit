@@ -1,32 +1,27 @@
 package ru.exceptionteapots.pricetrace;
 
 
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+//        myEdit.clear();
+        myEdit.putString("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydS5wcmljZXRyYWNlLmNyYWNrZXJtYWtlciIsImlhdCI6MTY1NDA5ODI4MCwiZXhwIjoxNjYxODc0MjgwLCJzdWIiOiJlYjcyZTkzYjgxNWI0Y2Y5OTRmNjU2N2RiYjQxZWU5OSJ9.DG47tqpSearIoJqiwl3Sutsfq2azZa1FRNPKBr4dtQY");
+        myEdit.apply();
         setTheme(R.style.Theme_PriceTrace);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

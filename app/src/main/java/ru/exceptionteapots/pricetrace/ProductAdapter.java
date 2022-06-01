@@ -1,33 +1,24 @@
 package ru.exceptionteapots.pricetrace;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -112,13 +103,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     @Override
                     public void onResponse(@NonNull Call<List<Characteristic>> call, @NonNull Response<List<Characteristic>> response) {
                         List<Characteristic> list = response.body();
-
+                        characteristics.clear();
                         if (list.get(0).getId() != 0) {
                             characteristics.addAll(list);
-                            characteristicAdapter.notifyDataSetChanged();
                             sheetCharacteristicsTitle.setVisibility(View.VISIBLE);
                             sheetCharacteristics.setVisibility(View.VISIBLE);
                         }
+                        characteristicAdapter.notifyDataSetChanged();
                     }
                     @Override
                     public void onFailure(@NonNull Call<List<Characteristic>> call, @NonNull Throwable t) {
