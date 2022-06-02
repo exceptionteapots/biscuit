@@ -2,6 +2,7 @@ package ru.exceptionteapots.pricetrace;
 
 import static ru.exceptionteapots.pricetrace.NetworkService.hasConnection;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -23,11 +25,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListProductFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private List<Product> data = new ArrayList<>();
-    private ProductAdapter adapter;
+public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
+    private List<FullProduct> data = new ArrayList<>();
+    private ProductAdapterCart adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private int categoryID;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,17 +38,16 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity) requireActivity()).setChosenFragment(0);
-        View view = inflater.inflate(R.layout.fragment_list_product, container, false);
-        mSwipeRefreshLayout = view.findViewById(R.id.list_product_refresh);
+        ((MainActivity) requireActivity()).setChosenFragment(2);
+        View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        mSwipeRefreshLayout = view.findViewById(R.id.cart_refresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.dark_red);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        RecyclerView recyclerView = view.findViewById(R.id.list_product_list);
+        RecyclerView recyclerView = view.findViewById(R.id.cart_list);
 
-        categoryID = ListProductFragmentArgs.fromBundle(getArguments()).getCategoryID();
         FrameLayout frameLayout = view.findViewById(R.id.bottom_sheet);
-        adapter = new ProductAdapter(getContext(), data, recyclerView, frameLayout);
+        adapter = new ProductAdapterCart(getContext(), data, recyclerView, frameLayout);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -74,18 +75,35 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
                     })
                     .show();
             mSwipeRefreshLayout.setRefreshing(false);
+            return;
         }
-        Call<List<Product>> call = NetworkService.getInstance().getPriceTraceAPI().getProductsByCategory(categoryID);
-        call.enqueue(new Callback<List<Product>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
-                List<Product> list = response.body();
-                if (list != null) {
-                    data.addAll(list);
 
-                    data = new ArrayList<>();
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    adapter.notifyDataSetChanged();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String token = sharedPreferences.getString("token", "");
+        Call<List<Cart>> call = NetworkService.getInstance().getPriceTraceAPI().getCart("Bearer " + token);
+        call.enqueue(new Callback<List<Cart>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Cart>> call, @NonNull Response<List<Cart>> response) {
+                data.clear();
+                adapter.notifyDataSetChanged();
+                List<Cart> list = response.body();
+                if (list != null) {
+
+                    for (Cart cart: list) {
+                        NetworkService.getInstance().getPriceTraceAPI().getProductById(cart.getProductID()).enqueue(new Callback<FullProduct>() {
+                            @Override
+                            public void onResponse(@NonNull Call<FullProduct> call, @NonNull Response<FullProduct> response) {
+                                FullProduct product = response.body();
+                                data.add(product);
+                                adapter.notifyDataSetChanged();
+                            }
+                            @Override
+                            public void onFailure(@NonNull Call<FullProduct> call, @NonNull Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+                    }
+
                 }
                 else {
                     new MaterialAlertDialogBuilder(getContext())
@@ -98,12 +116,21 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
                             .show();
                     getParentFragmentManager().popBackStack();
                 }
+
+                mSwipeRefreshLayout.setRefreshing(false);
             }
             @Override
-            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Cart>> call, @NonNull Throwable t) {
                 t.printStackTrace();
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle(getString(R.string.cart_empty_title))
+                        .setMessage(getString(R.string.cart_empty_message))
+                        .setIcon(R.drawable.ic_add_to_cart)
+                        .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {})
+                        .show();
+                getParentFragmentManager().popBackStack();
             }
         });
-    }
 
+    }
 }

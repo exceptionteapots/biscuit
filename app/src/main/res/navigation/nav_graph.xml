@@ -19,10 +19,13 @@
         android:id="@+id/authorizationFragment"
         android:name="ru.exceptionteapots.pricetrace.AuthorizationFragment"
         android:label="fragment_authorization"
-        tools:layout="@layout/fragment_authorization" >
+        tools:layout="@layout/fragment_authorized" >
         <argument
             android:name="username"
             app:argType="string" />
+        <action
+            android:id="@+id/action_authorizationFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -56,7 +59,14 @@
         android:id="@+id/profileFragment"
         android:name="ru.exceptionteapots.pricetrace.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_authorized" />
+        tools:layout="@layout/fragment_unauthorized" >
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_regFragment"
+            app:destination="@id/regFragment" />
+    </fragment>
     <fragment
         android:id="@+id/subcategoriesFragment"
         android:name="ru.exceptionteapots.pricetrace.SubcategoriesFragment"
@@ -70,4 +80,19 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ru.exceptionteapots.pricetrace.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="ru.exceptionteapots.pricetrace.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/regFragment"
+        android:name="ru.exceptionteapots.pricetrace.RegFragment"
+        android:label="fragment_reg"
+        tools:layout="@layout/fragment_reg" />
 </navigation>

@@ -22,5 +22,21 @@
     <string name="hello">Добро пожаловать!"</string>
     <string name="sign_in">Войти</string>
     <string name="sign_up">Зарегистрироваться</string>
+    <string name="login">Вход</string>
+    <string name="login_field">Логин</string>
+    <string name="password_field">Пароль</string>
+    <string name="no_data_title">Ошибка</string>
+    <string name="no_data_message">Заполните все поля и повторите операцию</string>
+    <string name="login_error_title">Ошибка входа</string>
+    <string name="login_error_message">Проверьте корректность вводимых данных</string>
+    <string name="cart">Корзина</string>
+    <string name="email">Почта</string>
+    <string name="reg">Регистрация</string>
+    <string name="reg_error_title">Ошибка регистрации</string>
+    <string name="password_field2">Повтор пароля</string>
+    <string name="check_password_failed">Пароли не совпадают</string>
+    <string name="cart_empty_title">Ошибка корзины</string>
+    <string name="cart_empty_message">Кажется, ваша корзина пуста</string>
+    <string name="remove_from_cart">Удалить</string>
 
 </resources>

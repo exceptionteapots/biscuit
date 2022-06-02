@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -19,6 +21,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
+
+    private NavController navController;
 
     private CircularProgressIndicator progressIndicator;
     @Override
@@ -33,6 +37,7 @@ public class ProfileFragment extends Fragment {
         progressIndicator = view.findViewById(R.id.progress);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String token = sharedPreferences.getString("token", "");
+        navController = Navigation.findNavController(getActivity(), R.id.fragmentContainerView);
         if (token.isEmpty()) progressIndicator.setVisibility(View.GONE);
         else {
             Call<User> call = NetworkService.getInstance().getPriceTraceAPI().isAuthenticated("Bearer " + token);
@@ -42,7 +47,6 @@ public class ProfileFragment extends Fragment {
                     if (response.isSuccessful()) {
                         Bundle arg = new Bundle();
                         arg.putString("username", response.body().getUsername());
-                        NavController navController = Navigation.findNavController(getActivity(), R.id.fragmentContainerView);
                         navController.navigate(R.id.authorizationFragment, arg);
                     } else {
                         progressIndicator.setVisibility(View.GONE);
@@ -55,27 +59,23 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+        Button signIn = view.findViewById(R.id.sign_in);
+        Button signUp = view.findViewById(R.id.sign_up);
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                navController.navigate(R.id.loginFragment);
+            }
+        });
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                navController.navigate(R.id.regFragment);
+            }
+        });
         return view;
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String token = sharedPreferences.getString("token", "");
-//        if (token.isEmpty()) return inflater.inflate(R.layout.fragment_unauthorized, container, false);
-//        NavController navController = Navigation.findNavController(getActivity(), R.id.fragmentContainerView);
-//        navController.navigate(R.);
-//        Toast.makeText(getContext(), token, Toast.LENGTH_SHORT).show();
-//        Call<User> call = NetworkService.getInstance().getPriceTraceAPI().isAuthenticated("Bearer " + token);
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-//                if (response.isSuccessful())
-//            }
-//            @Override
-//            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-////        if (user == null) {Toast.makeText(getContext(), "GG", Toast.LENGTH_SHORT).show();
-////            return inflater.inflate(R.layout.fragment_unauthorized, container, false);
-////        }
 
     }
 }
