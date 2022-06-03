@@ -22,6 +22,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.adapters.CategoryAdapter;
 import ru.exceptionteapots.pricetrace.pojo.Category;
 import ru.exceptionteapots.pricetrace.NetworkService;
 import ru.exceptionteapots.pricetrace.R;

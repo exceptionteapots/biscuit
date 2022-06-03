@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace.fragments;
+package ru.exceptionteapots.pricetrace.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,13 +24,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private final RecyclerView recyclerView;
     private final boolean isParent;
 
-    CategoryAdapter(Context context, List<Category> items, RecyclerView recyclerView, boolean isParent) {
+    public CategoryAdapter(Context context, List<Category> items, RecyclerView recyclerView, boolean isParent) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
         this.isParent = isParent;
     }
-    CategoryAdapter(Context context, List<Category> items, RecyclerView recyclerView) {
+    public CategoryAdapter(Context context, List<Category> items, RecyclerView recyclerView) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
