@@ -10,6 +10,15 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import ru.exceptionteapots.pricetrace.pojo.Cart;
+import ru.exceptionteapots.pricetrace.pojo.Category;
+import ru.exceptionteapots.pricetrace.pojo.Characteristic;
+import ru.exceptionteapots.pricetrace.pojo.FullProduct;
+import ru.exceptionteapots.pricetrace.pojo.Login;
+import ru.exceptionteapots.pricetrace.pojo.Product;
+import ru.exceptionteapots.pricetrace.pojo.Registration;
+import ru.exceptionteapots.pricetrace.pojo.Token;
+import ru.exceptionteapots.pricetrace.pojo.User;
 
 
 public interface PriceTraceAPI {
@@ -44,7 +53,7 @@ public interface PriceTraceAPI {
     public Call<Void> addToCart(@Body Cart cart, @Header("Authorization") String token);
 
     @POST("/sign_up")
-    public Call<RegAnswer> register(@Body Registration registration);
+    public Call<Void> register(@Body Registration registration);
 
     @DELETE("/user/cart/{product_id}")
     public Call<Void> removeFromCart(@Path("product_id") int product_id, @Header("Authorization") String token);

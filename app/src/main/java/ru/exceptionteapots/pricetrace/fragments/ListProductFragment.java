@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
 import static ru.exceptionteapots.pricetrace.NetworkService.hasConnection;
 
@@ -22,6 +22,11 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.MainActivity;
+import ru.exceptionteapots.pricetrace.NetworkService;
+import ru.exceptionteapots.pricetrace.pojo.Product;
+import ru.exceptionteapots.pricetrace.adapters.ProductAdapter;
+import ru.exceptionteapots.pricetrace.R;
 
 public class ListProductFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private List<Product> data = new ArrayList<>();
@@ -75,8 +80,7 @@ public class ListProductFragment extends Fragment implements SwipeRefreshLayout.
                     .show();
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        Call<List<Product>> call = NetworkService.getInstance().getPriceTraceAPI().getProductsByCategory(categoryID);
-        call.enqueue(new Callback<List<Product>>() {
+        NetworkService.getInstance().getPriceTraceAPI().getProductsByCategory(categoryID).enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 List<Product> list = response.body();

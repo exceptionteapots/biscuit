@@ -1,7 +1,8 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,15 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.NetworkService;
+import ru.exceptionteapots.pricetrace.R;
+import ru.exceptionteapots.pricetrace.pojo.Characteristic;
+import ru.exceptionteapots.pricetrace.pojo.FullProduct;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class ProductAdapterCart extends RecyclerView.Adapter<ProductAdapterCart.ViewHolder> {
 
     private final LayoutInflater inflater;
-    private final List<Product> items;
+    private final List<FullProduct> items;
     private final RecyclerView recyclerView;
     private final BottomSheetBehavior sheetBehavior;
     private final TextView sheetName;
@@ -45,7 +50,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private final RecyclerView sheetCharacteristics;
     private final SharedPreferences sharedPreferences;
 
-    ProductAdapter(Context context, List<Product> items, RecyclerView recyclerView, FrameLayout frameLayout) {
+    public ProductAdapterCart(Context context, List<FullProduct> items, RecyclerView recyclerView, FrameLayout frameLayout) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
@@ -76,7 +81,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.product_item, parent, false);
+        View view = inflater.inflate(R.layout.product_item_cart, parent, false);
         return new ViewHolder(view);
     }
 
@@ -85,16 +90,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
      * */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product item = items.get(position);
+        FullProduct item = items.get(position);
 
-                holder.productName.setText(item.getName());
-                // срез описания товара до 100 символов + проверка по длине
-                String description = item.getDescription();
-                if (description != null && description.length() > 0)
-                    holder.productDescription.setText(description.length() > 100 ? description.substring(0, 100) : description + "...");
-                if (item.getMin_price() != 0) {
-                String price = "от " + item.getMin_price() + "₽ до " + item.getMax_price() + "₽";
-                holder.productPrice.setText(price);}
+        holder.productName.setText(item.getName());
+        // срез описания товара до 100 символов + проверка по длине
+        String description = item.getDescription();
+        Log.e("DESC", description);
+        if (description != null && description.length() > 0)
+            holder.productDescription.setText(description.length() > 100 ? description.substring(0, 100) + "..." : description);
+        else holder.productDescription.setText("");
+//        if (item.getMin_price() != 0) {
+//            String price = "от " + item.getMin_price() + "₽ до " + item.getMax_price() + "₽";
+//            holder.productPrice.setText(price);}
 
 
         try {
@@ -109,17 +116,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return items.size();
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView productImage;
-        final TextView productName, productDescription, productPrice;
+        final TextView productName;
+//        final TextView productPrice;
+        final TextView productDescription;
         final Button toCart;
         ViewHolder(View view){
             super(view);
-            productImage = view.findViewById(R.id.product_img);
-            productName = view.findViewById(R.id.product_name);
-            productDescription = view.findViewById(R.id.product_description);
-            productPrice = view.findViewById(R.id.product_price);
-            toCart = view.findViewById(R.id.product_button);
+            productImage = view.findViewById(R.id.product_img2);
+            productName = view.findViewById(R.id.product_name2);
+            productDescription = view.findViewById(R.id.product_description2);
+//            productPrice = view.findViewById(R.id.product_price2);
+            toCart = view.findViewById(R.id.product_button2);
             view.setOnClickListener(this);
             toCart.setOnClickListener(this);
         }
@@ -127,22 +137,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         @Override
         public void onClick(View view) {
             int itemPosition = getAdapterPosition();
-            int productID = items.get(itemPosition).getId();
+            int productID = items.get(itemPosition).getProduct_id();
             if (view.getId() == toCart.getId()) {
                 String token = sharedPreferences.getString("token", "");
                 if (token.isEmpty()) {
                     Snackbar.make(view, "Вы не авторизованы", Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                Cart cart = new Cart();
-                cart.setProductID(productID);
-                cart.setCount(1);
-                Call<Void> call = NetworkService.getInstance().getPriceTraceAPI().addToCart(cart, "Bearer " + token);
-                call.enqueue(new Callback<Void>() {
+                NetworkService.getInstance().getPriceTraceAPI().removeFromCart(productID, "Bearer " + token).enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         if (response.isSuccessful()) {
-                            Snackbar.make(view, "Товар добавлен в коризну", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(view, "Товар удален из корзины", Snackbar.LENGTH_LONG).show();
+                            items.remove(getAdapterPosition());
+                            recyclerView.getAdapter().notifyDataSetChanged();
                         }
                         else {
                             Snackbar.make(view, "Вы не авторизованы", Snackbar.LENGTH_LONG).show();

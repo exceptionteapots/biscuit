@@ -1,20 +1,17 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -23,10 +20,21 @@ import com.google.android.material.snackbar.Snackbar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.MainActivity;
+import ru.exceptionteapots.pricetrace.NetworkService;
+import ru.exceptionteapots.pricetrace.R;
+import ru.exceptionteapots.pricetrace.pojo.Registration;
 
 public class RegFragment extends Fragment {
 
-    NavController navController;
+    private NavController navController;
+    private Button sendButton;
+    private Button infoButton;
+    private EditText loginField;
+    private EditText passwordField;
+    private EditText emailField;
+    private EditText passwordCheckField;
+    private CircularProgressIndicator progressIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,12 +47,24 @@ public class RegFragment extends Fragment {
         ((MainActivity) requireActivity()).setChosenFragment(2);
         View view = inflater.inflate(R.layout.fragment_reg, container, false);
         navController = Navigation.findNavController(getActivity(), R.id.fragmentContainerView);
-        Button sendButton = view.findViewById(R.id.reg_button);
-        CircularProgressIndicator progressIndicator = view.findViewById(R.id.reg_progress);
-        EditText loginField = view.findViewById(R.id.reg_login_text_field);
-        EditText passwordField = view.findViewById(R.id.reg_password_text_field);
-        EditText emailField = view.findViewById(R.id.reg_email_text_field);
-        EditText passwordCheckField = view.findViewById(R.id.reg_password_text_field2);
+        sendButton = view.findViewById(R.id.reg_button);
+        infoButton = view.findViewById(R.id.info_button);
+        progressIndicator = view.findViewById(R.id.reg_progress);
+        loginField = view.findViewById(R.id.reg_login_text_field);
+        passwordField = view.findViewById(R.id.reg_password_text_field);
+        emailField = view.findViewById(R.id.reg_email_text_field);
+        passwordCheckField = view.findViewById(R.id.reg_password_text_field2);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("Правила регистрации")
+                        .setMessage("Логин 3-15 символов: возможны строчные и заглавные латинские буквы, цифры и спецсимволы (не более одного в ряд и не в начале строки)\n\nПароль более 8 символов: обязательны строчные и заглавные буквы, цифры и спецсимволы")
+                        .setIcon(R.drawable.ic_info)
+                        .setPositiveButton("OK", ((dialogInterface, i) -> {}))
+                        .show();
+            }
+        });
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,10 +94,9 @@ public class RegFragment extends Fragment {
                 registration.setPassword(passwordField.getText().toString());
                 registration.setEmail(emailField.getText().toString());
 
-                Call<RegAnswer> call = NetworkService.getInstance().getPriceTraceAPI().register(registration);
-                call.enqueue(new Callback<RegAnswer>() {
+                NetworkService.getInstance().getPriceTraceAPI().register(registration).enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(@NonNull Call<RegAnswer> call, @NonNull Response<RegAnswer> response) {
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         if (response.isSuccessful()) {
                             getParentFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             Snackbar.make(view, "Успешно! Теперь можно войти в новый аккаунт", Snackbar.LENGTH_LONG).show();
@@ -91,11 +110,10 @@ public class RegFragment extends Fragment {
                                     .setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {})
                                     .show();
                             progressIndicator.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
-                    public void onFailure(@NonNull Call<RegAnswer> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                         t.printStackTrace();
                     }
                 });

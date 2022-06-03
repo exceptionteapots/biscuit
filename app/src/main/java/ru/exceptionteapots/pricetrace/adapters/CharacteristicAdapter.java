@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import ru.exceptionteapots.pricetrace.R;
+import ru.exceptionteapots.pricetrace.pojo.Characteristic;
 
 public class CharacteristicAdapter extends RecyclerView.Adapter<CharacteristicAdapter.ViewHolder> implements View.OnClickListener {
 

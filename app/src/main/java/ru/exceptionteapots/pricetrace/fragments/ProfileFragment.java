@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +19,9 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.NetworkService;
+import ru.exceptionteapots.pricetrace.R;
+import ru.exceptionteapots.pricetrace.pojo.User;
 
 public class ProfileFragment extends Fragment {
 
@@ -40,8 +43,7 @@ public class ProfileFragment extends Fragment {
         navController = Navigation.findNavController(getActivity(), R.id.fragmentContainerView);
         if (token.isEmpty()) progressIndicator.setVisibility(View.GONE);
         else {
-            Call<User> call = NetworkService.getInstance().getPriceTraceAPI().isAuthenticated("Bearer " + token);
-            call.enqueue(new Callback<User>() {
+            NetworkService.getInstance().getPriceTraceAPI().isAuthenticated("Bearer " + token).enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                     if (response.isSuccessful()) {

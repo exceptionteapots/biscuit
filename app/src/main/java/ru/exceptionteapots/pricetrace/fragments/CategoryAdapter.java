@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -14,6 +13,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import ru.exceptionteapots.pricetrace.pojo.Category;
+import ru.exceptionteapots.pricetrace.R;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> implements View.OnClickListener {
 

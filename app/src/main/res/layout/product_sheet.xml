@@ -20,7 +20,7 @@
             android:layout_width="100dp"
             android:scaleType="centerCrop"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic__931142_minimize_minus_remove_line_icon"
+            android:src="@drawable/ic_splash_item"
             app:tint="@color/dark_red"
             android:layout_gravity="center|top"/>
         <androidx.core.widget.NestedScrollView

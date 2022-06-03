@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
 import static ru.exceptionteapots.pricetrace.NetworkService.hasConnection;
 
@@ -24,6 +24,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.pojo.Cart;
+import ru.exceptionteapots.pricetrace.pojo.FullProduct;
+import ru.exceptionteapots.pricetrace.MainActivity;
+import ru.exceptionteapots.pricetrace.NetworkService;
+import ru.exceptionteapots.pricetrace.adapters.ProductAdapterCart;
+import ru.exceptionteapots.pricetrace.R;
 
 public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -85,7 +91,6 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onResponse(@NonNull Call<List<Cart>> call, @NonNull Response<List<Cart>> response) {
                 data.clear();
-                adapter.notifyDataSetChanged();
                 List<Cart> list = response.body();
                 if (list != null) {
 
@@ -93,8 +98,7 @@ public class CartFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         NetworkService.getInstance().getPriceTraceAPI().getProductById(cart.getProductID()).enqueue(new Callback<FullProduct>() {
                             @Override
                             public void onResponse(@NonNull Call<FullProduct> call, @NonNull Response<FullProduct> response) {
-                                FullProduct product = response.body();
-                                data.add(product);
+                                data.add(response.body());
                                 adapter.notifyDataSetChanged();
                             }
                             @Override

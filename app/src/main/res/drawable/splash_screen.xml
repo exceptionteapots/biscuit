@@ -3,12 +3,12 @@
 <!--Splash-screen style-->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
 
-    <item android:drawable="@color/light_red"/>
+    <item android:drawable="@color/white"/>
 
     <item>
 
         <bitmap
-            android:src="@drawable/logo"
+            android:src="@drawable/logo3"
             android:gravity="clip_vertical"/>
 
     </item>

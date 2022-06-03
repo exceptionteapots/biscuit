@@ -1,9 +1,9 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Registration {
+public class Login {
     @SerializedName("username")
     @Expose
     private String username;
@@ -11,10 +11,6 @@ public class Registration {
     @SerializedName("password")
     @Expose
     private String password;
-
-    @SerializedName("email")
-    @Expose
-    private String email;
 
     public String getUsername() {
         return username;
@@ -30,13 +26,5 @@ public class Registration {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

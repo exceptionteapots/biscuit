@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
+
+import ru.exceptionteapots.pricetrace.MainActivity;
+import ru.exceptionteapots.pricetrace.R;
 
 public class AuthorizationFragment extends Fragment {
 

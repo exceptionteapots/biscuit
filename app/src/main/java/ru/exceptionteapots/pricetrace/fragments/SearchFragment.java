@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -24,6 +23,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.NetworkService;
+import ru.exceptionteapots.pricetrace.pojo.Product;
+import ru.exceptionteapots.pricetrace.adapters.ProductAdapter;
+import ru.exceptionteapots.pricetrace.R;
 
 public class SearchFragment extends Fragment {
     private List<Product> data = new ArrayList<>();
@@ -79,7 +82,6 @@ public class SearchFragment extends Fragment {
                                     data.addAll(list);
                                     adapter.notifyDataSetChanged();
                                     warning.setText(getString(R.string.search_success));
-//                                    Toast.makeText(view.getContext(), list.get(0).getDescription(), Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     data.clear();

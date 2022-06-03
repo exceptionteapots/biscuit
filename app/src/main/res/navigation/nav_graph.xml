@@ -6,7 +6,7 @@
     app:startDestination="@id/profileFragment">
     <fragment
         android:id="@+id/categoriesFragment"
-        android:name="ru.exceptionteapots.pricetrace.CategoriesFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.CategoriesFragment"
         android:label="fragment_categories"
         tools:layout="@layout/fragment_categories" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/authorizationFragment"
-        android:name="ru.exceptionteapots.pricetrace.AuthorizationFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.AuthorizationFragment"
         android:label="fragment_authorization"
         tools:layout="@layout/fragment_authorized" >
         <argument
@@ -29,12 +29,12 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="ru.exceptionteapots.pricetrace.SearchFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/productFragment"
-        android:name="ru.exceptionteapots.pricetrace.ProductFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.ProductFragment"
         android:label="fragment_product"
         tools:layout="@layout/fragment_product" >
         <argument
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/listProductFragment"
-        android:name="ru.exceptionteapots.pricetrace.ListProductFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.ListProductFragment"
         android:label="fragment_list_product"
         tools:layout="@layout/fragment_list_product" >
         <argument
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="ru.exceptionteapots.pricetrace.ProfileFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_unauthorized" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/subcategoriesFragment"
-        android:name="ru.exceptionteapots.pricetrace.SubcategoriesFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.SubcategoriesFragment"
         android:label="fragment_subcategories"
         tools:layout="@layout/fragment_subcategories" >
         <action
@@ -82,17 +82,17 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="ru.exceptionteapots.pricetrace.LoginFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/cartFragment"
-        android:name="ru.exceptionteapots.pricetrace.CartFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/regFragment"
-        android:name="ru.exceptionteapots.pricetrace.RegFragment"
+        android:name="ru.exceptionteapots.pricetrace.fragments.RegFragment"
         android:label="fragment_reg"
         tools:layout="@layout/fragment_reg" />
 </navigation>

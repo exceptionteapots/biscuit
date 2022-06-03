@@ -1,4 +1,4 @@
-package ru.exceptionteapots.pricetrace;
+package ru.exceptionteapots.pricetrace.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,6 +21,11 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.exceptionteapots.pricetrace.pojo.Login;
+import ru.exceptionteapots.pricetrace.MainActivity;
+import ru.exceptionteapots.pricetrace.NetworkService;
+import ru.exceptionteapots.pricetrace.R;
+import ru.exceptionteapots.pricetrace.pojo.Token;
 
 public class LoginFragment extends Fragment {
 
@@ -60,8 +65,7 @@ public class LoginFragment extends Fragment {
                 login.setUsername(loginField.getText().toString());
                 login.setPassword(passwordField.getText().toString());
 
-                Call<Token> call = NetworkService.getInstance().getPriceTraceAPI().authenticate(login);
-                call.enqueue(new Callback<Token>() {
+                NetworkService.getInstance().getPriceTraceAPI().authenticate(login).enqueue(new Callback<Token>() {
                     @Override
                     public void onResponse(@NonNull Call<Token> call, @NonNull Response<Token> response) {
                         if (response.isSuccessful()) {
