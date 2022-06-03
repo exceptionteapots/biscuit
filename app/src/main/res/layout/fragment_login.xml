@@ -60,6 +60,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        app:endIconMode="password_toggle"
         android:id="@+id/password_layout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
