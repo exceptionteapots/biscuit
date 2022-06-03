@@ -57,22 +57,7 @@ public class SubcategoriesFragment extends Fragment implements SwipeRefreshLayou
         recyclerView.setAdapter( adapter );
         mSwipeRefreshLayout.setRefreshing(true);
 
-        // отображение дочерних категорий
-        NetworkService.getInstance().getPriceTraceAPI().getSubcategoryByParentId(parentID).enqueue(new Callback<List<Category>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
-                List<Category> list = response.body();
-                data.clear();
-                data.addAll(list);
-                adapter.notifyDataSetChanged();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-            @Override
-            public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
+        onRefresh();
         return view;
     }
 
